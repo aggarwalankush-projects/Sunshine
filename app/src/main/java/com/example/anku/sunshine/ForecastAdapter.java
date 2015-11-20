@@ -43,33 +43,47 @@ public class ForecastAdapter extends CursorAdapter {
                 break;
         }
         View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        view.setTag(viewHolder);
         return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-        ImageView iconView = (ImageView) view.findViewById(R.id.list_item_icon);
-        iconView.setImageResource(R.mipmap.ic_launcher);
+        viewHolder.iconView.setImageResource(R.mipmap.ic_launcher);
 
         long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
-        TextView dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
-        dateView.setText(Utility.getFriendlyDayString(context, dateInMillis));
+        viewHolder.dateView.setText(Utility.getFriendlyDayString(context, dateInMillis));
 
         String description = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
-        TextView descriptionView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
-        descriptionView.setText(description);
+        viewHolder.descriptionView.setText(description);
 
         boolean isMetric = Utility.isMetric(context);
 
         double high = cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
-        TextView highView = (TextView) view.findViewById(R.id.list_item_high_textview);
-        highView.setText(Utility.formatTemperature(high, isMetric));
+        viewHolder.highTempView.setText(Utility.formatTemperature(high, isMetric));
 
         double low = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
-        TextView lowView = (TextView) view.findViewById(R.id.list_item_low_textview);
-        lowView.setText(Utility.formatTemperature(low, isMetric));
+        viewHolder.lowTempView.setText(Utility.formatTemperature(low, isMetric));
+    }
+
+
+    public static class ViewHolder {
+        public final ImageView iconView;
+        public final TextView dateView;
+        public final TextView descriptionView;
+        public final TextView highTempView;
+        public final TextView lowTempView;
+
+        public ViewHolder(View view) {
+            iconView = (ImageView) view.findViewById(R.id.list_item_icon);
+            dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
+            descriptionView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
+            highTempView = (TextView) view.findViewById(R.id.list_item_high_textview);
+            lowTempView = (TextView) view.findViewById(R.id.list_item_low_textview);
+        }
     }
 }
