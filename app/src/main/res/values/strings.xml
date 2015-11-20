@@ -17,4 +17,5 @@
     <string name="pref_units_imperial" translatable="false">imperial</string>
     <string name="action_map">Map Location</string>
     <string name="action_share">Share</string>
+    <string name="forecast_fragment_tag">FFTAG</string>
 </resources>
