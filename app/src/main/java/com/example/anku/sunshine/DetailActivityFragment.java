@@ -36,17 +36,19 @@ public class DetailActivityFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             mForecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-            ((TextView) rootView.findViewById(R.id.detail_text)).setText(mForecastStr);
+            if (null != mForecastStr)
+                ((TextView) rootView.findViewById(R.id.detail_text)).setText(mForecastStr);
         }
         return rootView;
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.detailfragment, menu);
         MenuItem menuItem = menu.findItem(R.id.action_share);
         ShareActionProvider mShareActionProvider =
                 (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
-        if (mShareActionProvider != null ) {
+        if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(createShareForecastIntent());
         } else {
             Log.d(LOG_TAG, "Share Action Provider is null?");

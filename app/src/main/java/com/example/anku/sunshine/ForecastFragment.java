@@ -16,7 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.anku.sunshine.data.WeatherContract;
+import com.example.anku.sunshine.data.WeatherContract.LocationEntry;
+import com.example.anku.sunshine.data.WeatherContract.WeatherEntry;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -24,6 +25,29 @@ import com.example.anku.sunshine.data.WeatherContract;
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final int FORECAST_LOADER=0;
+
+    private static final String[] FORECAST_COLUMNS = {
+            WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
+            WeatherEntry.COLUMN_DATE,
+            WeatherEntry.COLUMN_SHORT_DESC,
+            WeatherEntry.COLUMN_MAX_TEMP,
+            WeatherEntry.COLUMN_MIN_TEMP,
+            LocationEntry.COLUMN_LOCATION_SETTING,
+            WeatherEntry.COLUMN_WEATHER_ID,
+            LocationEntry.COLUMN_COORD_LAT,
+            LocationEntry.COLUMN_COORD_LONG
+    };
+
+    static final int COL_WEATHER_ID = 0;
+    static final int COL_WEATHER_DATE = 1;
+    static final int COL_WEATHER_DESC = 2;
+    static final int COL_WEATHER_MAX_TEMP = 3;
+    static final int COL_WEATHER_MIN_TEMP = 4;
+    static final int COL_LOCATION_SETTING = 5;
+    static final int COL_WEATHER_CONDITION_ID = 6;
+    static final int COL_COORD_LAT = 7;
+    static final int COL_COORD_LONG = 8;
+
     private ForecastAdapter mForecastAdapter;
 
     public ForecastFragment() {
@@ -89,13 +113,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         String locationSetting = Utility.getPreferredLocation(getActivity());
 
         // Sort order:  Ascending, by date.
-        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
-        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+        String sortOrder = WeatherEntry.COLUMN_DATE + " ASC";
+        Uri weatherForLocationUri = WeatherEntry.buildWeatherLocationWithStartDate(
                 locationSetting, System.currentTimeMillis());
 
         return new CursorLoader(getActivity(),
                 weatherForLocationUri,
-                null,
+                FORECAST_COLUMNS,
                 null,
                 null,
                 sortOrder);
