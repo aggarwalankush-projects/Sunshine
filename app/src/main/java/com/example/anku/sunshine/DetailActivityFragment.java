@@ -137,7 +137,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         if (cursor != null && cursor.moveToFirst()) {
             int weatherId = cursor.getInt(COL_WEATHER_CONDITION_ID);
 
-            mIconView.setImageResource(R.mipmap.ic_launcher);
+            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
 
             long date = cursor.getLong(COL_WEATHER_DATE);
             String friendlyDateText = Utility.getDayName(getActivity(), date);
