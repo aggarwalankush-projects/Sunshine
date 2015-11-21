@@ -42,6 +42,7 @@
         <provider
             android:authorities="com.example.anku.sunshine.app"
             android:name=".data.WeatherProvider" />
+        <service android:name=".service.SunshineService"/>
     </application>
 
 </manifest>
