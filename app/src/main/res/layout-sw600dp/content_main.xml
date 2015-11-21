@@ -9,7 +9,7 @@
               tools:context="com.example.android.sunshine.app.MainActivity">
 
     <fragment
-        android:id="@+id/fragment_forecast"
+        android:id="@+id/forecast_fragment"
         android:name="com.example.anku.sunshine.ForecastFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
