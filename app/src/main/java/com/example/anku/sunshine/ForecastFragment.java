@@ -26,6 +26,11 @@ import com.example.anku.sunshine.data.WeatherContract.WeatherEntry;
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private ForecastAdapter mForecastAdapter;
+
+    public ListView getListView() {
+        return mListView;
+    }
+
     private ListView mListView;
     private int mPosition = ListView.INVALID_POSITION;
     private static final String SELECTED_KEY = "selected_position";
@@ -128,12 +133,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             }
         });
 
+
         if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
         mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
         return rootView;
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -142,6 +149,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         }
         super.onSaveInstanceState(outState);
     }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -161,13 +169,26 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 sortOrder);
     }
 
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mForecastAdapter.swapCursor(cursor);
         if (mPosition != ListView.INVALID_POSITION) {
             mListView.smoothScrollToPosition(mPosition);
         }
+
+        // to select first item by default
+//            getListView().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    ListView listView = getListView(); // Save a local reference rather than calling `getListView()` three times
+//                    listView.setSelection(0);
+//                    listView.performItemClick(listView.getChildAt(0), 0, 0);
+//                }
+//            }, 500);
+
     }
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
