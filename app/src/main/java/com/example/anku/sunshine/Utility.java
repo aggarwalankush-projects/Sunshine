@@ -189,13 +189,14 @@ public class Utility {
     }
 
     @SuppressWarnings("ResourceType")
-    static public @SunshineSyncAdapter.LocationStatus
-    int getLocationStatus(Context c){
+    static public
+    @SunshineSyncAdapter.LocationStatus
+    int getLocationStatus(Context c) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
         return sp.getInt(c.getString(R.string.pref_location_status_key), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
     }
 
-    static public void resetLocationStatus(Context c){
+    static public void resetLocationStatus(Context c) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
         SharedPreferences.Editor spe = sp.edit();
         spe.putInt(c.getString(R.string.pref_location_status_key), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
@@ -233,5 +234,22 @@ public class Utility {
             return String.format(Locale.US, formatArtUrl, "clouds");
         }
         return null;
+    }
+
+    public static String getFullFriendlyDayString(Context context, long dateInMillis) {
+
+        String day = getDayName(context, dateInMillis);
+        int formatId = R.string.format_full_friendly_date;
+        return String.format(context.getString(
+                formatId,
+                day,
+                getFormattedMonthDay(context, dateInMillis)));
+    }
+
+    public static boolean usingLocalGraphics(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String sunshineArtPack = context.getString(R.string.pref_art_pack_sunshine);
+        return prefs.getString(context.getString(R.string.pref_art_pack_key),
+                sunshineArtPack).equals(sunshineArtPack);
     }
 }
