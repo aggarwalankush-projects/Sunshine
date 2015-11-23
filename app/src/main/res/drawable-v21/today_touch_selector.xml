@@ -11,6 +11,6 @@
     <item android:state_selected="true"
           android:drawable="@color/primary_light"/>
 
-    <item android:drawable="@color/primary_dark" />
+    <item android:drawable="@color/primary" />
 
 </selector>
