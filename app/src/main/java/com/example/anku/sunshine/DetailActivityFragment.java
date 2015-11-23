@@ -83,7 +83,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
         if (arguments != null) {
             mUri = arguments.getParcelable(DetailActivityFragment.DETAIL_URI);
         }
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_detail_start, container, false);
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
         mDescriptionView = (TextView) rootView.findViewById(R.id.detail_forecast_textview);
@@ -147,12 +147,14 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
                     null
             );
         }
+        getView().setVisibility(View.INVISIBLE);
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor != null && cursor.moveToFirst()) {
+            getView().setVisibility(View.VISIBLE);
             int weatherId = cursor.getInt(COL_WEATHER_CONDITION_ID);
 
             if (Utility.usingLocalGraphics(getActivity())) {
@@ -188,11 +190,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             mPressureView.setText(getActivity().getString(R.string.format_pressure, pressure));
 
             mForecast = String.format("%s - %s - %s/%s", dateText, description, high, low);
-
-            // If onCreateOptionsMenu has already happened, we need to update the share intent now.
-            if (mShareActionProvider != null) {
-                mShareActionProvider.setShareIntent(createShareForecastIntent());
-            }
         }
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
