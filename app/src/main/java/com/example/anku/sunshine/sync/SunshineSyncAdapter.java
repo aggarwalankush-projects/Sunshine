@@ -56,6 +56,8 @@ import java.util.concurrent.ExecutionException;
 public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = SunshineSyncAdapter.class.getSimpleName();
 
+    public static final String ACTION_DATA_UPDATED = "com.example.anku.sunshine.ACTION_DATA_UPDATED";
+
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
@@ -206,14 +208,12 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         final String OWM_MESSAGE_CODE = "cod";
 
 
-
-
         try {
 
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
 
             // do we have an error?
-            if ( forecastJson.has(OWM_MESSAGE_CODE) ) {
+            if (forecastJson.has(OWM_MESSAGE_CODE)) {
                 int errorCode = forecastJson.getInt(OWM_MESSAGE_CODE);
 
                 switch (errorCode) {
@@ -304,7 +304,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 getContext().getContentResolver().delete(WeatherEntry.CONTENT_URI,
                         WeatherEntry.COLUMN_DATE + " <= ?",
                         new String[]{Long.toString(dayTime.setJulianDay(julianStartDay - 1))});
-
+                updateWidgets();
                 notifyWeather();
             }
 
@@ -318,6 +318,12 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
+    private void updateWidgets() {
+        Context context = getContext();
+        // Setting the package ensures that only components in our app will receive the broadcast
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED).setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
+    }
 
     long addLocation(String locationSetting, String cityName, double lat, double lon) {
         long locationId;
