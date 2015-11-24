@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/appbar"
+        android:id="@+id/parallax_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -31,6 +31,5 @@
         android:layout_width="@dimen/landscape_forecast_view_width"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="?attr/actionBarSize"
         />
 </RelativeLayout>
